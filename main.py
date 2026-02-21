@@ -59,20 +59,17 @@ def opcion_anadir(inventario: Inventario) -> None:
     precio = leer_flotante("Precio: ", minimo=0.0)
 
     producto = Producto(producto_id, nombre, cantidad, precio)
-    if inventario.anadir_producto(producto):
-        print(" Producto agregado correctamente.")
-    else:
-        print(" No se pudo agregar: el ID ya existe.")
+
+    ok, msg = inventario.anadir_producto(producto)
+    print(("✅ " if ok else "❌ ") + msg)
 
 
 def opcion_eliminar(inventario: Inventario) -> None:
     print("\n--- Eliminar producto ---")
     producto_id = leer_texto_no_vacio("ID del producto a eliminar: ")
 
-    if inventario.eliminar_producto(producto_id):
-        print(" Producto eliminado.")
-    else:
-        print(" No se encontró un producto con ese ID.")
+    ok, msg = inventario.eliminar_producto(producto_id)
+    print(("✅ " if ok else "❌ ") + msg)
 
 
 def opcion_actualizar(inventario: Inventario) -> None:
@@ -97,10 +94,8 @@ def opcion_actualizar(inventario: Inventario) -> None:
     if opcion in (2, 3):
         nuevo_precio = leer_flotante("Nuevo precio: ", minimo=0.0)
 
-    if inventario.actualizar_producto(producto_id, nueva_cantidad, nuevo_precio):
-        print(" Producto actualizado.")
-    else:
-        print(" No se encontró un producto con ese ID.")
+    ok, msg = inventario.actualizar_producto(producto_id, nueva_cantidad, nuevo_precio)
+    print(("✅ " if ok else "❌ ") + msg)
 
 
 def opcion_buscar(inventario: Inventario) -> None:
@@ -131,6 +126,10 @@ def opcion_listar(inventario: Inventario) -> None:
 
 def main() -> None:
     inventario = Inventario()
+
+    # Notificar carga inicial (archivo inventario.txt)
+    if hasattr(inventario, "ultimo_ok_archivo") and hasattr(inventario, "ultimo_estado_archivo"):
+        print(("✅ " if inventario.ultimo_ok_archivo else "❌ ") + inventario.ultimo_estado_archivo)
 
     while True:
         mostrar_menu()

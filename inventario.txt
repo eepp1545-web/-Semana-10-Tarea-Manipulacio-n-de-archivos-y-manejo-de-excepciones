@@ -1,0 +1,3 @@
+chocolate 1,50|chocolate|2|3.0
+Azúcar blanca|Azúcar|1|1.5
+eapp|sinnumero|ZZ|Erick
